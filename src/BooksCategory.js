@@ -9,24 +9,33 @@ class BooksCategory extends Component {
   static propTypes = {
     books: PropTypes.array.isRequired,
     onChange: PropTypes.func.isRequired
-  }
-
-  
+  };
 
   render(){
-    const books = this.props.books
+    const books = this.props.books;
+    
+    const shelves = [
+    { type: 'currentlyReading', title: 'Currently Reading' },
+    { type: 'wantToRead', title: 'Want to Read' },
+    { type: 'read', title: 'Read' }
+  ];
     return (
       <div className="list-books">
         <div className="list-books-title">
           <h1>MyReads</h1>
         </div>
         <div className="list-books-content">
-          <div>
-            <BookShelf books={books.filter((book) => (book.shelf === "currentlyReading"))} title="Currently Reading"  onChangeShelf={this.props.onChange}/>
-
-            <BookShelf books={books.filter((book) => (book.shelf === "read"))} title="Read" onChangeShelf={this.props.onChange}/>
-            <BookShelf books={books.filter((book) => (book.shelf === "wantToRead"))} title="Want to Read" onChangeShelf={this.props.onChange}/>
-          </div>
+          {shelves.map((shelf, index) => {
+            const shelfBooks = books.filter(book => book.shelf === shelf.type);
+            return (
+              <div className="bookshelf" key={index}>
+                <h2 className="bookshelf-title">{shelf.title}</h2>
+                 <div className="bookshelf-books">
+                   <BookShelf books={shelfBooks} onChangeShelf={this.props.onChange} />
+                 </div>
+              </div>
+             );
+          })}
         </div>
         <div className="open-search">
           <Link to='/search'>Add a book</Link>

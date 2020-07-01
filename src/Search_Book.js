@@ -41,12 +41,17 @@ class SearchBook extends Component {
 
   search_books = (val) => {
     if (val.length !== 0) {
-      BooksAPI.search(val, 10).then((books) => {
+      BooksAPI.search(val, 20).then((books) => {
         if (books.length > 0) {
           books = books.filter((book) => (book.imageLinks))
           books = this.changeBookShelf(books)
           this.setState(() => {
             return {Books: books}
+          })
+        }
+        else{
+          this.setState(() => {
+            return {Books: []}
           })
         }
       })
